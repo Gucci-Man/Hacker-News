@@ -16,7 +16,7 @@ async function getAndShowStoriesOnStart() {
  * A render method to render HTML for an individual Story instance
  * - story: an instance of Story
  *
- * Returns the markup for the story.
+ * Returns the markup for the story along with a favorites button
  */
 
 function generateStoryMarkup(story) {
@@ -50,13 +50,23 @@ function putStoriesOnPage() {
 
   // loop through all of our stories and generate HTML for them
   for (let story of storyList.stories) {
+    console.dir(story);
     const $story = generateStoryMarkup(story);
-    console.log($story[0].innerHTML);
     $allStoriesList.append($story);
   }
 
   $allStoriesList.show();
 }
+
+/** Whatever the user click as their favorite stories will be added to current
+ *  user's favorites
+ */
+
+function addFavStoryUI(evt) {
+  console.log("Adding favorite!");
+}
+
+$favoriteStory.on('click', addFavStoryUI);
 
 /** This should get data from the form, call the .addStory method
  * and then put that new story on the page. 

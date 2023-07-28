@@ -79,7 +79,7 @@ class StoryList {
       method: "POST",
       data: {
         token: user.loginToken,
-        story: newStory
+        story: newStory,
       }
     });
 
@@ -116,6 +116,40 @@ class User {
 
     // store the login token on the user so it's easy to find for API calls.
     this.loginToken = token;
+  }
+
+  /** Method to add favorite stories
+   * 
+   *  - user: The current instance of User that will have their favorite story added
+   *  - storyId: storyId of the user's favorite story to be added
+   */
+
+  static async addFavStory(user, storyId) {
+    const response = await axios({
+      url: `${BASE_URL}/users/${user.username}/favorites/${storyId}`,
+      method: 'POST',
+      data: { 
+        token: user.loginToken,
+      }
+    })
+    console.log(response);
+  }
+
+  /** Method to remove favorite story
+   * 
+   *  - user: The current instance of User that will have their favorite story deleted
+   *  - storyId: storyId of the user's favorite story to be deleted
+   */
+
+  static async deleteFavStory(user, storyId) {
+    const response = await axios({
+      url: `${BASE_URL}/users/${user.username}/favorites/${storyId}`,
+      method: 'DELETE',
+      data: {
+        token: user.loginToken,
+      }
+    })
+    console.log(response);
   }
 
   /** Register new user in API, make User instance & return it.

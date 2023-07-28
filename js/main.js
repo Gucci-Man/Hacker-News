@@ -16,6 +16,7 @@ const $navUserProfile = $("#nav-user-profile");
 const $navLogOut = $("#nav-logout");
 
 const $navAddStory = $('#nav-add-story');
+const $favoriteStory = $(".add-fav"); // TODO, event listener for favorites
 
 
 /** To make it easier for individual components to show just themselves, this
