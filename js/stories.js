@@ -25,6 +25,12 @@ function generateStoryMarkup(story) {
   const hostName = story.getHostName();
   return $(`
       <li id="${story.storyId}">
+        <label class="add-fav">
+          <input type="checkbox" />
+          <i class="icon-heart">
+            <i class="icon-plus-sign"></i>
+          </i>
+        </label>
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -45,6 +51,7 @@ function putStoriesOnPage() {
   // loop through all of our stories and generate HTML for them
   for (let story of storyList.stories) {
     const $story = generateStoryMarkup(story);
+    console.log($story[0].innerHTML);
     $allStoriesList.append($story);
   }
 
@@ -65,12 +72,13 @@ async function submitStoryForm(evt) {
 
   const storyObj = {title, author, url};
 
+  // clear out text inputs 
   $("#add-story-author").val('');
   $("#add-story-title").val('');
   $("#add-story-url").val('');
 
   await StoryList.addStory(currentUser, storyObj);
-  // update storylist so when call putStoriesOnPage it will show
+  // update storylist so when calling putStoriesOnPage it will show
   storyList = await StoryList.getStories();
 
   alert('Story added!');
