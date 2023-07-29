@@ -148,7 +148,7 @@ class User {
    * - story: a Story instance to add to favorites
    */
 
-  static async addFavStory(story) {
+  async addFavStory(story) {
     this.favorites.push(story);
     const response = await axios({
       url: `${BASE_URL}/users/${this.username}/favorites/${story.storyId}`,
@@ -164,7 +164,7 @@ class User {
    * - story: a Story instance to add to favorites
    */
 
-  static async deleteFavStory(story) {
+  async deleteFavStory(story) {
     this.favorites = this.favorites.filter(s => s.storyId !== story.storyId);
     const response = await axios({
       url: `${BASE_URL}/users/${this.username}/favorites/${story}`,

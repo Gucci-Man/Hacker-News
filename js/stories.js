@@ -72,10 +72,10 @@ function putStoriesOnPage() {
 
   // loop through all of our stories and generate HTML for them
   for (let story of storyList.stories) {
-    console.dir(story);
+    //console.dir(story);
     const $story = generateStoryMarkup(story);
     $allStoriesList.append($story);
-  }
+  } 
 
   $allStoriesList.show();
 }
@@ -118,11 +118,81 @@ async function submitStoryForm(evt) {
 
   const story = await storyList.addStory(currentUser, storyObj);
 
-  const $story = generateStoryMarkUp(story);
+  const $story = generateStoryMarkup(story);
   $allStoriesList.prepend($story);
 
-  
-  
+  $addStoryForm.slideUp("slow");
+  $addStoryForm.trigger("reset");
 }
 
 $addStoryForm.on('submit', submitStoryForm);
+
+/***************************************************
+ *  Functionality for list of user's own stories 
+ */
+
+function putUserStoriesOnPage() {
+  console.debug("putUserStoriesOnPage");
+
+  $ownStories.empty();
+
+  if (currentUser.ownStories.length === 0) {
+    $ownStories.append("<h5>No stories added by the user yet!</h5>");
+  } else {
+    // loop through all of users stories and generate HTML for them
+    for (let story of currentUser.ownStories) {
+      let $story = generateStoryMarkup(story, true);
+      $ownStories.append($story);
+    }
+  }
+
+  $ownStories.show();
+}
+
+/************************************************
+ *  Functionality for favorites list and favoriting a story
+ */
+
+/** Put favorites list on page. */
+
+function putFavoritesListOnPage() {
+  console.debug("putFavoritesListOnPage");
+
+  $favoritedStories.empty();
+
+  if (currentUser.favorites.length === 0) {
+    $favoritedStories.append("<h5>No favorites added!</h5>");
+  } else {
+    // loop through all of users favorites and generate HTML for them
+    for (let story of currentUser.favorites) {
+      const $story = generateStoryMarkup(story);
+      $favoritedStories.append($story);
+    }
+  }
+
+  $favoritedStories.show();
+}
+
+/** Handle favorite/un-favorite a story */
+
+async function toggleStoryFavorite(evt) {
+  console.debug("toggleStoryFavorite");
+
+  const $target = $(evt.target);
+  const $closestLi = $target.closest("li");
+  const storyId = $closestLi.attr("id");
+  const story = storyList.stories.find(s => s.storyId === storyId);
+
+  // see if the item is already favorited (checking by presence of star)
+  if($target.hasClass("fas")) {
+    // currently a favorite: remove from user's fav list and change star
+    await currentUser.deleteFavStory(story);
+    $target.slosest("i").toggleClass("fas far");
+  } else {
+    // currently not a favorite: do the opposite
+    await currentUser.addFavStory(story);
+    $target.closest("i").toggleClass("fas far");
+  }
+}
+
+$storiesLists.on("click", ".star", toggleStoryFavorite);
