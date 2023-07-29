@@ -6,7 +6,6 @@ const $body = $("body");
 
 const $storiesLoadingMsg = $("#stories-loading-msg");
 const $allStoriesList = $("#all-stories-list");
-// solution
 const $favoritedStories = $("#favorited-stories");
 const $ownStories = $("#my-stories");
 const $storiesContainer = $("#stories-container");
@@ -22,7 +21,7 @@ const $navLogin = $("#nav-login");
 const $navUserProfile = $("#nav-user-profile");
 const $navLogOut = $("#nav-logout");
 
-const $navAddStory = $('#nav-add-story'); // same as $navSubmitStory
+const $navAddStory = $('#nav-add-story'); 
 
 const $userProfile = $("#user-profile");
 
