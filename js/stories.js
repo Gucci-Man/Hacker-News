@@ -19,26 +19,48 @@ async function getAndShowStoriesOnStart() {
  * Returns the markup for the story along with a favorites button
  */
 
-function generateStoryMarkup(story) {
+function generateStoryMarkup(story, showDeleteBtn = false) {
   // console.debug("generateStoryMarkup", story);
 
   const hostName = story.getHostName();
+
+  // if a user is logged in, show favorite/not-favorite star
+  const showStar = Boolean(currentUser);
+
   return $(`
       <li id="${story.storyId}">
-        <label class="add-fav">
-          <input type="checkbox" />
-          <i class="icon-heart">
-            <i class="icon-plus-sign"></i>
-          </i>
-        </label>
+        <div>
+        ${showDeleteBtn ? getDeleteBtnHTML() : ""}
+        ${showStar ? getStarHTML(story, currentUser) : ""}
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
         <small class="story-hostname">(${hostName})</small>
-        <small class="story-author">by ${story.author}</small>
-        <small class="story-user">posted by ${story.username}</small>
+        <div class="story-author">by ${story.author}</div>
+        <div class="story-user">posted by ${story.username}</div>
+        </div>
       </li>
     `);
+}
+
+/** Make delete button HTML for story */
+
+function getDeleteBtnHTML() {
+  return `
+      <span class='trash-can'>
+        <i class='fas fa-trash-alt'></i>
+      </span>`
+}
+
+/** Make star as favorites button for story selection */
+
+function getStarHTML(story, user) {
+  const isFavorite = user.isFavorite(story);
+  const starType = isFavorite ? "fas" : "far";
+  return `
+      <span class='star'>
+        <i class='${starType} fa-star'></i>
+      </span>`;
 }
 
 /** Gets list of stories from server, generates their HTML, and puts on page. */
@@ -58,15 +80,21 @@ function putStoriesOnPage() {
   $allStoriesList.show();
 }
 
-/** Whatever the user click as their favorite stories will be added to current
- *  user's favorites
- */
+/** Handle deleting a story */
 
-function addFavStoryUI(evt) {
-  console.log("Adding favorite!");
+async function deleteStory(evt) {
+  console.debug("deleteStory");
+
+  const $closestLi = $(evt.target).closest("li");
+  const storyId = $closestLi.attr("id");
+
+  await storyList.removeStory(currentUser, storyId);
+
+  // re-generate story list
+  await putStoriesOnPage();
 }
 
-$favoriteStory.on('click', addFavStoryUI);
+$ownStories.on("click", ".trash-can", deleteStory);
 
 /** This should get data from the form, call the .addStory method
  * and then put that new story on the page. 
@@ -76,9 +104,10 @@ async function submitStoryForm(evt) {
   evt.preventDefault();
   console.debug("submitStoryForm", evt);
 
-  let author = $("#add-story-author").val();
-  let title = $("#add-story-title").val();
-  let url = $("#add-story-url").val();
+  // capture info from form
+  const author = $("#add-story-author").val();
+  const title = $("#add-story-title").val();
+  const url = $("#add-story-url").val();
 
   const storyObj = {title, author, url};
 
@@ -87,11 +116,12 @@ async function submitStoryForm(evt) {
   $("#add-story-title").val('');
   $("#add-story-url").val('');
 
-  await StoryList.addStory(currentUser, storyObj);
-  // update storylist so when calling putStoriesOnPage it will show
-  storyList = await StoryList.getStories();
+  const story = await storyList.addStory(currentUser, storyObj);
 
-  alert('Story added!');
+  const $story = generateStoryMarkUp(story);
+  $allStoriesList.prepend($story);
+
+  
   
 }
 

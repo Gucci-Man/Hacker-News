@@ -66,13 +66,13 @@ class StoryList {
   }
 
   /** Adds story data to API, makes a Story instance, adds it to story list.
-   * - user - the current instance of User who will post the story
+   * - user: the current instance of User who will post the story
    * - obj of {title, author, url}
    *
    * Returns the new Story instance
    */
 
-  static async addStory( user, newStory ) {
+  async addStory( user, newStory ) {
 
     const response = await axios({
       url: `${BASE_URL}/stories`,
@@ -83,7 +83,33 @@ class StoryList {
       }
     });
 
-    return new Story(response.data);
+    const story = new Story(response.data.story);
+    this.stories.unshift(story);
+    user.ownStories.unshift(story);
+
+    return story;
+  }
+
+  /** Delete story from API and remove from the story lists 
+   * 
+   *  - user: the current instance of User who is deleting story
+   *  - storyId: the ID of the story you want to remove
+  */
+
+  async removeStory(user, storyId) {
+    const token = user.loginToken;
+    await axios({
+      url: `${BASE_URL}/stories/${storyId}`,
+      method: "DELETE",
+      data: { token: user.loginToken }
+    });
+
+    // filter out the story whose ID we are removing
+    this.stories = this.stories.filter(story => story.storyId !== storyId);
+
+    // do the same thing for the user's list of stories & their favories
+    user.ownStories = user.ownStories.filter(story => story.storyId !== storyId);
+    user.favorites = user.favorites.filter(story => story.storyId !== storyId);
   }
 }
 
@@ -118,38 +144,42 @@ class User {
     this.loginToken = token;
   }
 
-  /** Method to add favorite stories
-   * 
-   *  - user: The current instance of User that will have their favorite story added
-   *  - storyId: storyId of the user's favorite story to be added
+  /** Method to add story to user favorites and update the API
+   * - story: a Story instance to add to favorites
    */
 
-  static async addFavStory(user, storyId) {
+  static async addFavStory(story) {
+    this.favorites.push(story);
     const response = await axios({
-      url: `${BASE_URL}/users/${user.username}/favorites/${storyId}`,
+      url: `${BASE_URL}/users/${this.username}/favorites/${story.storyId}`,
       method: 'POST',
       data: { 
-        token: user.loginToken,
+        token: this.loginToken,
       }
     })
     console.log(response);
   }
 
-  /** Method to remove favorite story
-   * 
-   *  - user: The current instance of User that will have their favorite story deleted
-   *  - storyId: storyId of the user's favorite story to be deleted
+  /** Method to remove a story from user favorites and update the API
+   * - story: a Story instance to add to favorites
    */
 
-  static async deleteFavStory(user, storyId) {
+  static async deleteFavStory(story) {
+    this.favorites = this.favorites.filter(s => s.storyId !== story.storyId);
     const response = await axios({
-      url: `${BASE_URL}/users/${user.username}/favorites/${storyId}`,
+      url: `${BASE_URL}/users/${this.username}/favorites/${story}`,
       method: 'DELETE',
       data: {
-        token: user.loginToken,
+        token: this.loginToken,
       }
     })
     console.log(response);
+  }
+
+  /** Return true/false if given Story instance is a favorite of this user. */
+
+  isFavorite(story) {
+    return this.favorites.some(s => (s.storyId === story.storyId));
   }
 
   /** Register new user in API, make User instance & return it.
