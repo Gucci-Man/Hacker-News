@@ -12,5 +12,7 @@ The website will display a list of stories that when clicked on will send the us
 an account and submit new stories. They are also able to 'star' or 'unstar' stories to favorite them. A user can log out and log back in and still be 
 able to see the stories they have submitted and the stories that are their favorites. 
 
+The data inlcuding the user's information, stories and their favorites are stored in a API. Evey time the website loads it will fetch the data from the API. 
+
 Logged-in users can also remove any previous stories that they have submitted. (Please note that the API may respond with a Status 404 error which can 
 result in stories that have been deleted or favorited to be displayed even though they should not be)
