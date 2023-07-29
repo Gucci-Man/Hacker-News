@@ -3,6 +3,8 @@
 body {
   font-family: Arimo, sans-serif;
   margin: 8px 7.5vw;
+  height: 100vh;
+  background-image: radial-gradient(circle, rgb(238, 174, 202) 0%, rgb(148, 187, 233) 100%);
 }
 
 h1 {

@@ -108,8 +108,8 @@ class StoryList {
     this.stories = this.stories.filter(story => story.storyId !== storyId);
 
     // do the same thing for the user's list of stories & their favories
-    user.ownStories = user.ownStories.filter(story => story.storyId !== storyId);
-    user.favorites = user.favorites.filter(story => story.storyId !== storyId);
+    user.ownStories = user.ownStories.filter(s => s.storyId !== storyId);
+    user.favorites = user.favorites.filter(s => s.storyId !== storyId);
   }
 }
 

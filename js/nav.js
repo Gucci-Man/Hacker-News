@@ -63,13 +63,13 @@ $navLogin.on("click", navLoginClick);
 
 function updateNavOnLogin() {
   console.debug("updateNavOnLogin");
-  $addStoryForm.hide();
+  //$addStoryForm.hide();
   $(".main-nav-links").show();
   $navLogin.hide();
   $navLogOut.show();
   $loginForm.hide();
   $signupForm.hide();
-  $navAddStory.show(); // show option to add story 
+  //$navAddStory.show(); // show option to add story 
   $navUserProfile.text(`${currentUser.username}`).show();
 }
 

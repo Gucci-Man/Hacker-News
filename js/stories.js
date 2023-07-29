@@ -49,7 +49,7 @@ function getDeleteBtnHTML() {
   return `
       <span class='trash-can'>
         <i class='fas fa-trash-alt'></i>
-      </span>`
+      </span>`;
 }
 
 /** Make star as favorites button for story selection */
