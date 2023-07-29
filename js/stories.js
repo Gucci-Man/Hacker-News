@@ -67,6 +67,7 @@ function getStarHTML(story, user) {
 
 function putStoriesOnPage() {
   console.debug("putStoriesOnPage");
+  $ownStories.hide();
 
   $allStoriesList.empty();
 
@@ -78,6 +79,7 @@ function putStoriesOnPage() {
   } 
 
   $allStoriesList.show();
+  $favoritedStories.hide();
 }
 
 /** Handle deleting a story */
@@ -147,6 +149,7 @@ function putUserStoriesOnPage() {
   }
 
   $ownStories.show();
+  $favoritedStories.hide();
 }
 
 /************************************************
@@ -171,6 +174,8 @@ function putFavoritesListOnPage() {
   }
 
   $favoritedStories.show();
+  $ownStories.hide();
+  
 }
 
 /** Handle favorite/un-favorite a story */
@@ -187,7 +192,7 @@ async function toggleStoryFavorite(evt) {
   if($target.hasClass("fas")) {
     // currently a favorite: remove from user's fav list and change star
     await currentUser.deleteFavStory(story);
-    $target.slosest("i").toggleClass("fas far");
+    $target.closest("i").toggleClass("fas far");
   } else {
     // currently not a favorite: do the opposite
     await currentUser.addFavStory(story);

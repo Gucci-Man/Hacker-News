@@ -22,6 +22,7 @@ function navAddStory(evt) {
   hidePageComponents();
   $addStoryForm.show();
   $allStoriesList.show();
+  $favoritedStories.hide();
 }
 
 $navAddStory.on("click", navAddStory);
@@ -81,6 +82,6 @@ function navProfileClick(evt) {
   $userProfile.show();
 }
 
-$navUserProfile.on("click", navProfileClick);
+//$navUserProfile.on("click", navProfileClick);
 
 

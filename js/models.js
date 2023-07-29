@@ -167,7 +167,7 @@ class User {
   async deleteFavStory(story) {
     this.favorites = this.favorites.filter(s => s.storyId !== story.storyId);
     const response = await axios({
-      url: `${BASE_URL}/users/${this.username}/favorites/${story}`,
+      url: `${BASE_URL}/users/${this.username}/favorites/${story.storyId}`,
       method: 'DELETE',
       data: {
         token: this.loginToken,

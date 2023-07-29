@@ -9,7 +9,7 @@
      - Michael Hueter: initial creation, 2018
      - Elie Schoppik: refactoring using OO, 2019
      - Joel Burton: refactored and componentized, 2020
-     - Adel Ngo: Adding modifications
+     - Adel Ngo: Added submit, favorite and remove functions and updated UI, 2023
   -->
 
 <html lang="en">
@@ -64,15 +64,15 @@
     <h4>Add Story</h4>
     <div class="add-story-input">
       <label for="add-story-author">Author:</label>
-      <input id="add-story-author" type="text">
+      <input id="add-story-author" type="text" required>
     </div>
     <div class="add-story-input">
       <label for="add-story-title">Title:</label>
-      <input id="add-story-title" type="text">
+      <input id="add-story-title" type="text" required>
     </div>
     <div class="add-story-input">
       <label for="add-story-url">URL:</label>
-      <input id="add-story-url" type="url">
+      <input id="add-story-url" type="url" required>
     </div>
     <button type="submit">Submit</button>
     <hr>
@@ -119,15 +119,15 @@
     <h4>Create Account</h4>
     <div class="login-input">
       <label for="signup-name">name</label>
-      <input id="signup-name" autocapitalize="words">
+      <input id="signup-name" autocapitalize="words" required>
     </div>
     <div class="login-input">
       <label for="signup-username">username</label>
-      <input id="signup-username" autocomplete="new-username">
+      <input id="signup-username" autocomplete="new-username" required>
     </div>
     <div class="login-input">
       <label for="signup-password">password</label>
-      <input id="signup-password" autocomplete="new-password" type="password">
+      <input id="signup-password" autocomplete="new-password" type="password" required>
     </div>
     <button type="submit">create account</button>
   </form>
