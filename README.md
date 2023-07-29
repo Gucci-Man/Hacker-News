@@ -1,10 +1,10 @@
 # Hacker News
 
 Primary authors:
-     - Michael Hueter: initial creation, 2018
-     - Elie Schoppik: refactoring using OO, 2019
-     - Joel Burton: refactored and componentized, 2020
-     - Adel Ngo: Added submit, favorite and remove functions and updated UI, 2023
+- Michael Hueter: initial creation, 2018
+- Elie Schoppik: refactoring using OO, 2019
+- Joel Burton: refactored and componentized, 2020
+- Adel Ngo: Added submit, favorite and remove functions and updated UI, 2023
 
 This is a clone version of the popular Hacker News website.
 
